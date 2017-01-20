@@ -226,7 +226,9 @@ abstract class BaseTestCaseORM extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $config = $this->getMock($configurationClass, $mockMethods);
+        $configBuilder = $this->getMockBuilder($configurationClass);
+        $configBuilder->setMethods($mockMethods);
+        $config = $configBuilder->getMock();
 
         $config
             ->expects($this->once())

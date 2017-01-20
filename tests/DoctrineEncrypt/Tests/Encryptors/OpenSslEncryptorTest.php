@@ -1,21 +1,18 @@
 <?php
-
 namespace DoctrineEncrypt\Tests\Encryptors;
-use DoctrineEncrypt\Encryptors\AES256Encryptor;
+
+use DoctrineEncrypt\Encryptors\OpenSslEncryptor;
 
 /**
- * Created by PhpStorm.
- * User: dustin
- * Date: 04/02/16
- * Time: 5:50 PM
+ * Class OpenSslEncryptorTest
  */
-class AES256EncryptorTest extends \PHPUnit_Framework_TestCase
+class OpenSslEncryptorTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testEncryptDecrypt()
     {
-        $sixteenChars = 'testkeywith16___';
-        $e = new AES256Encryptor($sixteenChars);
+        $sixteenChars = '3_2_C_H_A_R_S_*_*_*_*_*_*_*_*_*_';
+        $e = new OpenSslEncryptor($sixteenChars);
 
         $plainText = 'test-data';
 
@@ -27,8 +24,8 @@ class AES256EncryptorTest extends \PHPUnit_Framework_TestCase
 
     public function testEncryptDecryptNull()
     {
-        $sixteenChars = 'testkeywith16___';
-        $e = new AES256Encryptor($sixteenChars);
+        $sixteenChars = '3_2_C_H_A_R_S_*_*_*_*_*_*_*_*_*_';
+        $e = new OpenSslEncryptor($sixteenChars);
 
         $plainText = null;
 
@@ -40,8 +37,8 @@ class AES256EncryptorTest extends \PHPUnit_Framework_TestCase
 
     public function testEncryptDecryptEmpty()
     {
-        $sixteenChars = 'testkeywith16___';
-        $e = new AES256Encryptor($sixteenChars);
+        $sixteenChars = '3_2_C_H_A_R_S_*_*_*_*_*_*_*_*_*_';
+        $e = new OpenSslEncryptor($sixteenChars);
 
         $plainText = '';
 
@@ -50,5 +47,4 @@ class AES256EncryptorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($plainText === $e->decrypt($cipherText));
     }
-
 }
