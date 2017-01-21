@@ -10,7 +10,3 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit -c tests/phpunit.xml.dist
-
-matrix:
-  allow_failures:
-     - php: hhvm
