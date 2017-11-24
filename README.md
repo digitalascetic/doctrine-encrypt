@@ -8,13 +8,17 @@ distinguishes itself with the following features:
 - Totally transparent field encryption: the value will only be encrypted in the database, never in the value
 - Unit testing
 
+## Tests
+
+Tests currently run with PHP 7.0, 7.1, 7.2
+
 ## Installation
 Add `nepda/doctrine-encrypt` to your Composer manifest.
 
 ```js
 {
     "require": {
-        "nepda/doctrine-encrypt": "~5.0"
+        "nepda/doctrine-encrypt": "~7.0"
     }
 }
 ```
@@ -45,7 +49,7 @@ $eventManager->addEventSubscriber($encrypt_subscriber);
 ```php
 <?php
 
-namespace Your\Namespace;
+namespace Your\CoolNamespace;
 
 use Doctrine\ORM\Mapping as ORM;
 
