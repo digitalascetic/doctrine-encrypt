@@ -10,7 +10,7 @@ distinguishes itself with the following features:
 
 ## Tests
 
-Tests currently run with PHP 7.0, 7.1, 7.2
+Tests currently run with PHP 7.1, 7.2
 
 ## Installation
 Add `nepda/doctrine-encrypt` to your Composer manifest.
