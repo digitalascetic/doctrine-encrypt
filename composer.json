@@ -6,8 +6,8 @@
     "description": "Package encrypts and decrypts Doctrine fields through life cycle events.",
 
     "require": {
-        "php": ">=5.3.2",
-        "doctrine/orm": "~2.0",
+        "php": ">=7.1",
+        "doctrine/orm": "~2.5",
         "ext-openssl": "*"
     },
 
