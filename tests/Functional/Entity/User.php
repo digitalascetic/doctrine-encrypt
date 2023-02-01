@@ -1,35 +1,33 @@
 <?php
 
-namespace DoctrineEncrypt\Tests\Entity;
+namespace DoctrineEncrypt\Test\Functional\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DoctrineEncrypt\Configuration\Encrypted;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class User
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      *
      * @var int
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     protected $id;
 
     /**
-     * @ORM\Column(name="username", type="string", length=64)
      * @var string
      */
+    #[ORM\Column(type: "string", length: 64)]
     protected $username;
 
     /**
-     * @ORM\Column(name="password", type="string", length=64)
-     * @Encrypted
      * @var string
      */
+    #[ORM\Column(type: "string", length: 64)]
+    #[Encrypted]
     protected $password;
 
     /**

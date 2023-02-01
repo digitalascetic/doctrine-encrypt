@@ -2,13 +2,14 @@
 
 namespace DoctrineEncrypt\Subscribers;
 
-use Doctrine\Common\Annotations\Reader;
+
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\PostLoadEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\UnitOfWork;
 use DoctrineEncrypt\Encryptors\EncryptorInterface;
 
 /**
@@ -31,12 +32,6 @@ class DoctrineEncryptSubscriber implements EventSubscriber
      * @var EncryptorInterface
      */
     private $encryptor;
-
-    /**
-     * Annotation reader
-     * @var \Doctrine\Common\Annotations\Reader
-     */
-    private $annReader;
 
     /**
      * Registr to avoid multi decode operations for one entity
@@ -62,13 +57,24 @@ class DoctrineEncryptSubscriber implements EventSubscriber
 
     /**
      * Initialization of subscriber
-     * @param Reader $annReader
      * @param EncryptorInterface $encryptor
      */
-    public function __construct(Reader $annReader, EncryptorInterface $encryptor)
+    public function __construct(EncryptorInterface $encryptor)
     {
-        $this->annReader = $annReader;
         $this->encryptor = $encryptor;
+    }
+
+    /**
+     * Realization of EventSubscriber interface method.
+     * @return array Return all events which this subscriber is listening
+     */
+    public function getSubscribedEvents()
+    {
+        return array(
+            Events::postLoad,
+            Events::onFlush,
+            Events::postFlush,
+        );
     }
 
     /**
@@ -81,7 +87,8 @@ class DoctrineEncryptSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
+        /** @var UnitOfWork $unitOfWork */
         $unitOfWork = $em->getUnitOfWork();
 
         $this->postFlushDecryptQueue = array();
@@ -131,7 +138,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $unitOfWork = $args->getEntityManager()->getUnitOfWork();
+        $unitOfWork = $args->getObjectManager()->getUnitOfWork();
 
         foreach ($this->postFlushDecryptQueue as $pair) {
             $fieldPairs = $pair['fields'];
@@ -154,46 +161,19 @@ class DoctrineEncryptSubscriber implements EventSubscriber
 
     /**
      * Listen a postLoad lifecycle event. Checking and decrypt entities
-     * which have @Encrypted annotations
-     * @param LifecycleEventArgs $args
+     * which have Encrypted attribute
+     * @param PostLoadEventArgs $args
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(PostLoadEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $em = $args->getEntityManager();
+        $entity = $args->getObject();
+        $em = $args->getObjectManager();
 
         if (!$this->hasInDecodedRegistry($entity)) {
             if ($this->processFields($entity, $em, false)) {
                 $this->addToDecodedRegistry($entity);
             }
         }
-    }
-
-    /**
-     * Realization of EventSubscriber interface method.
-     * @return array Return all events which this subscriber is listening
-     */
-    public function getSubscribedEvents()
-    {
-        return array(
-            Events::postLoad,
-            Events::onFlush,
-            Events::postFlush,
-        );
-    }
-
-    /**
-     * Capitalize string
-     * @param string $word
-     * @return string
-     */
-    public static function capitalize($word)
-    {
-        if (is_array($word)) {
-            $word = $word[0];
-        }
-
-        return str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $word)));
     }
 
     /**
@@ -267,7 +247,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
         foreach ($meta->getReflectionProperties() as $refProperty) {
             /** @var \ReflectionProperty $refProperty */
 
-            if ($this->annReader->getPropertyAnnotation($refProperty, self::ENCRYPTED_ANN_NAME)) {
+            if ($refProperty->getAttributes(self::ENCRYPTED_ANN_NAME)) {
                 $refProperty->setAccessible(true);
                 $encryptedFields[] = $refProperty;
             }

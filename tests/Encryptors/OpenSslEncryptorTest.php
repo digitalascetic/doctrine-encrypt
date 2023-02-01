@@ -1,12 +1,13 @@
 <?php
-namespace DoctrineEncrypt\Tests\Encryptors;
+namespace DoctrineEncrypt\Test\Encryptors;
 
 use DoctrineEncrypt\Encryptors\OpenSslEncryptor;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class OpenSslEncryptorTest
  */
-class OpenSslEncryptorTest extends \PHPUnit_Framework_TestCase
+class OpenSslEncryptorTest extends KernelTestCase
 {
 
     public function testEncryptDecrypt()

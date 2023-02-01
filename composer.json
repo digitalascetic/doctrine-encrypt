@@ -1,31 +1,57 @@
 {
-    "name": "nepda/doctrine-encrypt",
-    "type": "library",
-    "keywords": ["doctrine", "aes256", "encrypt", "decrypt"],
-    "license": "MIT",
-    "description": "Package encrypts and decrypts Doctrine fields through life cycle events.",
-
-    "require": {
-        "php": ">=7.1",
-        "doctrine/orm": "~2.5",
-        "ext-openssl": "*"
+  "name": "digitalascetic/doctrine-encrypt",
+  "type": "library",
+  "version": "6.2.0",
+  "keywords": [
+    "doctrine",
+    "aes256",
+    "encrypt",
+    "decrypt"
+  ],
+  "authors": [
+    {
+      "name": "Victor Melnik",
+      "email": "melnikvictorl@gmail.com"
     },
-
-    "require-dev": {
-        "phpunit/phpunit": "~5.7"
+    {
+      "name": "Dustin Thomson",
+      "email": "dthomson@51systems.com"
     },
-
-    "autoload": {
-        "psr-0": { "DoctrineEncrypt": "src" }
+    {
+      "name": "Eduard Deza",
+      "email": "ed@ascetic.io"
+    }
+  ],
+  "license": "MIT",
+  "description": "Package encrypts and decrypts Doctrine fields through life cycle events.",
+  "config": {
+    "preferred-install": {
+      "*": "dist"
     },
-    "authors": [
-        {
-            "name": "Victor Melnik",
-            "email": "melnikvictorl@gmail.com"
-        },
-        {
-            "name": "Dustin Thomson",
-            "email": "dthomson@51systems.com"
-        }
-    ]
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "DoctrineEncrypt\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DoctrineEncrypt\\Test\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "doctrine/orm": "^2.14"
+  },
+  "require-dev": {
+    "ext-sqlite3": "*",
+    "symfony/dotenv": "*",
+    "symfony/framework-bundle": "^6.2",
+    "symfony/orm-pack": "^2.3",
+    "symfony/test-pack": "^1.0",
+    "symfony/yaml": "*"
+  }
 }

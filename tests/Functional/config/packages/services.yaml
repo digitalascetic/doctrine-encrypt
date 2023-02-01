@@ -1,0 +1,17 @@
+parameters:
+
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ssl_encryptor:
+    class: DoctrineEncrypt\Encryptors\Base64OpenSSLEncryptor
+    arguments: ['wzZN9c2WL5ymTi5XDACuKzWojvDGwJ8N']
+
+  DoctrineEncrypt\Subscribers\DoctrineEncryptSubscriber:
+    class: DoctrineEncrypt\Subscribers\DoctrineEncryptSubscriber
+    arguments: ['@ssl_encryptor']
+    tags: ['doctrine.event_subscriber']
