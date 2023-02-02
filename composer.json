@@ -1,7 +1,7 @@
 {
   "name": "digitalascetic/doctrine-encrypt",
   "type": "library",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "keywords": [
     "doctrine",
     "aes256",

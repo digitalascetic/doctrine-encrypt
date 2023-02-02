@@ -23,7 +23,7 @@ class DoctrineEncryptSubscriberTest extends BaseTestCase
         $conn = $this->em->getConnection();
         $result = $conn->executeQuery('SELECT password FROM User')->fetchOne();
 
-        $this->assertNotEquals($result, 'testPassword');
+        $this->assertNotEquals('grfgCnffjbeq', $result);
 
         /** @var User $user */
         $user = $this->em->find(self::USER, $this->userId);
@@ -38,8 +38,8 @@ class DoctrineEncryptSubscriberTest extends BaseTestCase
         $user = $this->em->find(self::USER, $this->userId);
         $this->assertEquals('testPassword', $user->getPassword());
 
-        // $this->em->getUnitOfWork()->computeChangeSets();
-        // $this->assertFalse($this->em->getUnitOfWork()->isScheduledForUpdate($user));
+        $this->em->getUnitOfWork()->computeChangeSets();
+        $this->assertFalse($this->em->getUnitOfWork()->isScheduledForUpdate($user));
     }
 
     public function testCommit()
@@ -61,8 +61,8 @@ class DoctrineEncryptSubscriberTest extends BaseTestCase
         $this->assertEquals($password, $user->getPassword());
 
         //Ensure we have a clean object
-        //$this->em->getUnitOfWork()->computeChangeSets();
-        //$this->assertFalse($this->em->getUnitOfWork()->isScheduledForUpdate($user));
+        $this->em->getUnitOfWork()->computeChangeSets();
+        $this->assertFalse($this->em->getUnitOfWork()->isScheduledForUpdate($user));
     }
 
     /**

@@ -25,7 +25,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
     /**
      * Encrypted annotation full name
      */
-    const ENCRYPTED_ANN_NAME = 'DoctrineEncrypt\Configuration\Encrypted';
+    const ENCRYPTED_ANN_NAME = 'Encrypted';
 
     /**
      * Encryptor
