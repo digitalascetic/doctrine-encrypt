@@ -17,15 +17,11 @@ use DoctrineEncrypt\Encryptors\EncryptorInterface;
  */
 class DoctrineEncryptSubscriber implements EventSubscriber
 {
-    /**
-     * Encryptor interface namespace
-     */
-    const ENCRYPTOR_INTERFACE_NS = 'DoctrineEncrypt\Encryptors\EncryptorInterface';
 
     /**
      * Encrypted annotation full name
      */
-    const ENCRYPTED_ANN_NAME = 'Encrypted';
+    const ENCRYPTED_ANN_NAME = 'DoctrineEncrypt\Configuration\Encrypted';
 
     /**
      * Encryptor
@@ -113,7 +109,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
      */
     private function entityOnFlush($entity, EntityManager $em)
     {
-        $objId = spl_object_hash($entity);
+        $objId = spl_object_id($entity);
 
         $fields = array();
         foreach ($this->getEncryptedFields($entity, $em) as $field) {
@@ -143,7 +139,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
         foreach ($this->postFlushDecryptQueue as $pair) {
             $fieldPairs = $pair['fields'];
             $entity = $pair['entity'];
-            $oid = spl_object_hash($entity);
+            $oid = spl_object_id($entity);
 
             foreach ($fieldPairs as $fieldPair) {
                 /** @var \ReflectionProperty $field */
@@ -188,7 +184,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
         $properties = $this->getEncryptedFields($entity, $em);
 
         $unitOfWork = $em->getUnitOfWork();
-        $oid = spl_object_hash($entity);
+        $oid = spl_object_id($entity);
 
         foreach ($properties as $refProperty) {
             $value = $refProperty->getValue($entity);
@@ -215,7 +211,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
      */
     private function hasInDecodedRegistry($entity)
     {
-        return isset($this->decodedRegistry[spl_object_hash($entity)]);
+        return isset($this->decodedRegistry[spl_object_id($entity)]);
     }
 
     /**
@@ -224,7 +220,7 @@ class DoctrineEncryptSubscriber implements EventSubscriber
      */
     private function addToDecodedRegistry($entity)
     {
-        $this->decodedRegistry[spl_object_hash($entity)] = true;
+        $this->decodedRegistry[spl_object_id($entity)] = true;
     }
 
 

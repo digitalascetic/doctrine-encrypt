@@ -23,7 +23,7 @@ class DoctrineEncryptSubscriberTest extends BaseTestCase
         $conn = $this->em->getConnection();
         $result = $conn->executeQuery('SELECT password FROM User')->fetchOne();
 
-        $this->assertNotEquals('grfgCnffjbeq', $result);
+        $this->assertNotEquals('testPassword', $result);
 
         /** @var User $user */
         $user = $this->em->find(self::USER, $this->userId);
