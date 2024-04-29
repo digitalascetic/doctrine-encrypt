@@ -3,7 +3,7 @@
 namespace DoctrineEncrypt\Subscribers;
 
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\EntityManager;
@@ -15,7 +15,10 @@ use DoctrineEncrypt\Encryptors\EncryptorInterface;
 /**
  * Doctrine event subscriber which encrypt/decrypt entities
  */
-class DoctrineEncryptSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::postLoad)]
+#[AsDoctrineListener(event: Events::onFlush)]
+#[AsDoctrineListener(event: Events::postFlush)]
+class DoctrineEncryptSubscriber
 {
 
     /**
@@ -58,19 +61,6 @@ class DoctrineEncryptSubscriber implements EventSubscriber
     public function __construct(EncryptorInterface $encryptor)
     {
         $this->encryptor = $encryptor;
-    }
-
-    /**
-     * Realization of EventSubscriber interface method.
-     * @return array Return all events which this subscriber is listening
-     */
-    public function getSubscribedEvents()
-    {
-        return array(
-            Events::postLoad,
-            Events::onFlush,
-            Events::postFlush,
-        );
     }
 
     /**

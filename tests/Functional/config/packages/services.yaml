@@ -14,4 +14,8 @@ services:
   DoctrineEncrypt\Subscribers\DoctrineEncryptSubscriber:
     class: DoctrineEncrypt\Subscribers\DoctrineEncryptSubscriber
     arguments: ['@ssl_encryptor']
-    tags: ['doctrine.event_subscriber']
+    tags:
+      - { name: 'doctrine.event_listener', event: 'postLoad' }
+      - { name: 'doctrine.event_listener', event: 'onFlush' }
+      - { name: 'doctrine.event_listener', event: 'postFlush' }
+

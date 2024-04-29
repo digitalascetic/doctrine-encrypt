@@ -2,6 +2,11 @@
 
 > BBC: Break Backwards Compatibility
 
+7.0.0
+------
+* Replaced doctrine/orm dependency by symfony/orm-pack
+* DoctrineEncryptSubscriber as Doctrine Listener
+
 6.2.2
 ------
 * Replaced spl_object_hash with spl_object_id like UnitOfWork.
